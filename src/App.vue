@@ -15,4 +15,15 @@ export default {
 <style lang="less">
 // 样式初始化
 @import "./assets/reset.css";
+@import "./assets/common.css";
+#routeContainer {
+  width: 100%;
+  height: 100%;
+}
+.main {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
 </style>

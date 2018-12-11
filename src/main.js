@@ -20,6 +20,9 @@ const router = new VueRouter({
   routes,
 });
 
+import VueTouch from 'vue-touch';
+Vue.use(VueTouch, {name: 'v-touch'})
+
 new Vue({
   router,
   store,
