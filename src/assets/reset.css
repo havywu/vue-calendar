@@ -203,13 +203,6 @@ summary {
 @media screen and (min-width:600px){
     html{ font-size:14px;}
 }
-.clearfix:after {
-    content: "";
-    display: block;
-    width: 0;
-    height: 0;
-    clear: both;
-}
 
 html, body {
     width: 100%;

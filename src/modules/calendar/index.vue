@@ -1,46 +1,34 @@
 <template>
     <div class="box">
         <div class="header clearfix">
+            <span class="left font-20" @click.stop="closePanel">×</span>
             <span class="title font-16">{{currentDate.split('/')[0]}}年{{currentDate.split('/')[1]}}月</span>
-            <span class="left font-16" @click.stop="closePanel">×</span>
-        </div>
-        <div class="content">
-            <div class="flex-week">
-                <span class="week-item font-14">日</span>
-                <span class="week-item font-14">一</span>
-                <span class="week-item font-14">二</span>
-                <span class="week-item font-14">三</span>
-                <span class="week-item font-14">四</span>
-                <span class="week-item font-14">五</span>
-                <span class="week-item font-14">六</span>
+            <div class="tab-card font-16">
+                <span class="tab-item" :class="{monthSelected: 'day' === monthSelected}" @click.stop="handleMonthSwitch('day')">日</span>
+                <span class="tab-item" :class="{monthSelected: 'month' === monthSelected}" @click.stop="handleMonthSwitch('month')">月</span>
+                <span class="tab-item" :class="{monthSelected: 'year' === monthSelected}" @click.stop="handleMonthSwitch('year')">年</span>
             </div>
-            <v-touch @swipeleft="handleSwiperLeft" @swiperight="handleSwiperRight">
-                <div class="flex-day">
-                    <span class="day-item font-16" :class="{gray: item.gray, currentDay: item.selected, clicked: item.date === clickeDate}" v-for="item in days" :key="item.date" @click.stop="handleClicked(item.date)">
-                        <div>{{item.day}}</div>
-                        <div class="font-12 lightGray">{{item.lunarDate}}</div>
-                    </span>
-                </div>
-            </v-touch>
+            <span class="today font-16" @click.stop="handleToday">今天</span>
         </div>
+        <component :is="monthSelected" @changeDate="handleChangeDate" @changeMonthSelected="handleMonthSwitch" :currentDate="currentDate"></component>
     </div>
 </template>
 
 <script>
-import calendar from './calendar.js';
+import day from './day';
+import month from './month';
+import year from './year';
 export default {
     name: 'calendarBox',
-    mixins: [calendar],
+    components: {
+        day: day,
+        month: month,
+        year: year,
+    },
     data: function() {
         return {
-            days: [],
+            monthSelected: 'day',
             currentDate: '',
-            clickeDate: '',
-        }
-    },
-    watch: {
-        currentDate: function(val) {
-            this.days = this.getShowDays(val);
         }
     },
     mounted() {
@@ -54,8 +42,19 @@ export default {
         closePanel: function() {
             this.$emit("changePanel", false);  
         },
-        handleClicked: function(date) {
-            this.clickeDate = date;
+        handleMonthSwitch: function(flag) {
+            this.monthSelected = flag;
+        },
+        handleChangeDate: function(date) {
+            this.currentDate = date;
+        },
+        handleToday: function() {
+            this.monthSelected = 'day';
+            let date = new Date();
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            let currentDate = date.getDate();
+            this.currentDate = `${year}/${month}/${currentDate}`;
         }
     }
 }
@@ -74,47 +73,40 @@ export default {
     box-sizing: border-box;
 }
 .header {
-    text-align: center;
     height: 80px;
     line-height: 80px;
     border-bottom: 1px solid #e7e7e7;/*no*/
 }
 .header .left {
-    float: left;
-    color: rgba(16,142,233,.7);
+    color: #1890ff;
+    margin-right: 30px;
 }
-.flex-week {
+.header .today {
+    float: right;
+    margin-right: 20px;
+    color: #1890ff;
+}
+.header .tab-card {
+    float: right;
+    width: 240px;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
-    height: 80px;
     align-items: center;
+    height: 100%;
 }
-.flex-week .week-item {
-    width: 14%;
+.header .tab-card .tab-item {
+    flex-grow: 1;
     text-align: center;
+    height: 60px;
+    line-height: 60px;
+    border: 1px solid #c7c7c7;/*no*/
 }
-.flex-day {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
+.monthSelected {
+    border: 1px solid #1890ff !important;/*no*/
 }
-.flex-day .day-item {
-    text-align: center;
-    width: 14%;
-    padding: 15px 0;
-}
-.lightGray {
-    color: #666;
-}
-.gray {
-    color: #888;
-}
-.currentDay {
-    background: rgba(16,142,233,.2);
-}
-.clicked {
-    border: 1px solid rgba(16,142,233,1);/*no*/
+.header .tab-card .tab-item:nth-child(2) {
+    border-left: none;
+    border-right: none;
 }
 </style>

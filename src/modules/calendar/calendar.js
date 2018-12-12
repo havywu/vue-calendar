@@ -128,21 +128,25 @@ export default {
             let dateArr = this.currentDate.split('/');
             let year = Number(dateArr[0]);
             let month = Number(dateArr[1]);
+            let currentDays = '';
             if (month === 12) {
-                this.currentDate = `${year + 1}/1/1`;
+                currentDays = `${year + 1}/1/1`;
             } else {
-                this.currentDate = `${year}/${month + 1}/1`;
+                currentDays = `${year}/${month + 1}/1`;
             }
+            this.$emit('changeDate', currentDays);
         },
         handleSwiperRight: function() {
             let dateArr = this.currentDate.split('/');
             let year = Number(dateArr[0]);
             let month = Number(dateArr[1]);
+            let currentDays = '';
             if (month === 1) {
-                this.currentDate = `${year - 1}/12/1`;
+                currentDays = `${year - 1}/12/1`;
             } else {
-                this.currentDate = `${year}/${month - 1}/1`;
+                currentDays = `${year}/${month - 1}/1`;
             }
+            this.$emit('changeDate', currentDays);
         }
     }
 }
