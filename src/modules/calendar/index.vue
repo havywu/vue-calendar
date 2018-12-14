@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import day from './day';
-import month from './month';
-import year from './year';
+import day from './components/day';
+import month from './components/month';
+import year from './components/year';
 export default {
     name: 'calendarBox',
     components: {

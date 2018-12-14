@@ -124,6 +124,7 @@ export default {
             }
             return days;
         },
+        // 手势左滑
         handleSwiperLeft: function() {
             let dateArr = this.currentDate.split('/');
             let year = Number(dateArr[0]);
@@ -136,6 +137,7 @@ export default {
             }
             this.$emit('changeDate', currentDays);
         },
+        // 手势右滑
         handleSwiperRight: function() {
             let dateArr = this.currentDate.split('/');
             let year = Number(dateArr[0]);

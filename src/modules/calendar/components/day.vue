@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import calendar from './calendar.js';
+import calendar from '../calendar.js';
 export default {
     name: 'day',
     mixins: [calendar],

@@ -1,9 +1,11 @@
 <template>
-    <div class="year">
-        <div class="flex-item font-16" v-for="item in data" :key="item">
-            <span class="border" :class="{currentYear: item == currentYear, checkedYear: item == checkedYear}" @click.stop="changeYear(item)">{{item}}</span>
+    <v-touch @swipeleft="handleSwiperLeft" @swiperight="handleSwiperRight">
+        <div class="year">
+            <div class="flex-item font-16" v-for="item in data" :key="item">
+                <span class="border" :class="{currentYear: item == currentYear, checkedYear: item == checkedYear}" @click.stop="changeYear(item)">{{item}}</span>
+            </div>
         </div>
-    </div>
+    </v-touch>
 </template>
 
 <script>
@@ -12,19 +14,19 @@ export default {
     props: ['currentDate'],
     computed: {
         data: function() {
-            let year = this.currentDate.split('/')[0];
-                let arr = [year];
-                for (let i = 7; i > 0; i--) {
-                    arr.push(year - i);//前七年，共展示15年
-                    arr.push(Number(year) + 8 - i);
-                }
-                return arr.sort((a, b) => a-b);
+            let year = Number(this.currentYear);
+            let arr = [year];
+            for (let i = 7; i > 0; i--) {
+                arr.push(year - i);//前七年，共展示15年
+                arr.push(Number(year) + 8 - i);
+            }
+            return arr.sort((a, b) => a-b);
         },
     },
     data: function() {
         return {
             checkedYear: this.currentDate ? this.currentDate.split('/')[0] : '',
-            currentYear: new Date().getFullYear(),
+            currentYear: this.currentDate ? this.currentDate.split('/')[0] : new Date().getFullYear(),
         }
     },
     methods: {
@@ -34,6 +36,14 @@ export default {
             let newDate = `${item}/${date[1]}/${date[2]}`;
             this.$emit('changeMonthSelected', 'month');
             this.$emit('changeDate', newDate);
+        },
+        // 手势左滑
+        handleSwiperLeft: function() {
+            this.currentYear = Number(this.currentYear) + 15;
+        },
+        // 手势右滑
+        handleSwiperRight: function() {
+            this.currentYear = Number(this.currentYear) - 15;
         }
     }
 }
