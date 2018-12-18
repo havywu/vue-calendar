@@ -21,7 +21,7 @@ export default {
             return this.getMonthDays(year)[month - 2];
         },
         // 当月第一天之前应补的天数
-        getAddDays: function(weekday, year, month) {
+        getAddDays: function(weekday, year, month, flag) {
             // 当月第一天为周日，不需补充
             if (weekday === 7) {
                 return [];
@@ -35,16 +35,16 @@ export default {
                 let day = lastDays - (weekday - 1 - i);
                 let lunarDate = lunar.solar2lunar(nextY, nextM, day);
                 arr.push({
-                    day,
+                    day: flag ? "" : day,
                     date: `${nextY}/${nextM}/${i}`,
                     gray: true,
-                    lunarDate: this.showLunarDay(lunarDate),
+                    lunarDate: !flag && this.showLunarDay(lunarDate),
                 });
             }
             return arr;
         },
         // 当月最后一天应该补充的天数
-        getLastAddDays: function(weekday, year, month) {
+        getLastAddDays: function(weekday, year, month, flag) {
             // 当月最后一天为周日，不需补充
             if (weekday === 6) {
                 return [];
@@ -59,10 +59,10 @@ export default {
             for (let i = 1; i < 7 - weekday; i++) {
                 let lunarDate = lunar.solar2lunar(nextY, nextM, i);
                 arr.push({
-                    day: i,
+                    day: flag ? "" : i,
                     date: `${nextY}/${nextM}/${i}`,
                     gray: true,
-                    lunarDate: this.showLunarDay(lunarDate),
+                    lunarDate: !flag && this.showLunarDay(lunarDate),
                 });
             }
             return arr;
@@ -79,9 +79,13 @@ export default {
                 return obj.IMonthCn;
             }
             return obj.IDayCn;
-        },       
-        // 获取当前面板展示的天数
-        getShowDays: function(dateStr) {
+        },    
+        /**
+         * 获取当前面板展示的天数
+         * @param {*} dateStr 
+         * @param {*} flag 前后新增的日期是否隐藏，true为隐藏
+         */
+        getShowDays: function(dateStr, flag) {
             let dateArr = dateStr.split('/');
             let year = Number(dateArr[0]);
             let month = Number(dateArr[1]);
@@ -101,10 +105,10 @@ export default {
                     day: i,
                     date: `${year}/${month}/${i}`,
                     selected: currentYear === year && currentMonth === month && currentDate === i,
-                    lunarDate: this.showLunarDay(lunarDate),
+                    lunarDate: !flag && this.showLunarDay(lunarDate),
                 });
             }
-            let days = this.getAddDays(weekday, year, month).concat(temp, this.getLastAddDays(lastWeekDay, year, month));
+            let days = this.getAddDays(weekday, year, month, flag).concat(temp, this.getLastAddDays(lastWeekDay, year, month, flag));
             let len = days.length;
             // 永远展示6行数据
             if (len !== 42) {
@@ -113,12 +117,12 @@ export default {
                 let lastYear = lastArr[0];
                 let lastMonth = lastArr[1];
                 for (let j = 1; j <= 42 - len; j++) {
-                    let lunarDate = lunar.solar2lunar(lastYear, lastMonth, j + tempDay.day);
+                    let lunarDate = lunar.solar2lunar(lastYear, lastMonth + 1, j);
                     days.push({
-                        day: j + tempDay.day,
-                        date: `${lastYear}/${lastMonth}/${j + tempDay.day}`,
+                        day: flag ? "" : j,
+                        date: `${lastYear}/${lastMonth + 1}/${j}`,
                         gray: true,
-                        lunarDate: this.showLunarDay(lunarDate),
+                        lunarDate: !flag && this.showLunarDay(lunarDate),
                     });
                 }
             }

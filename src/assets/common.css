@@ -37,6 +37,16 @@
     font-size: 48px;/*no*/
 }
 
+.font-18 {
+    font-size: 18px;/*no*/
+}
+[data-dpr="2"] .font-18 {
+    font-size: 36px;/*no*/
+}
+[data-dpr="3"] .font-18 {
+    font-size: 54px;/*no*/
+}
+
 .font-20 {
     font-size: 20px;/*no*/
 }

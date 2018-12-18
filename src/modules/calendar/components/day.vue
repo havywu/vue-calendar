@@ -1,23 +1,23 @@
 <template>
-    <div class="content">
-            <div class="flex-week">
-                <span class="week-item font-14">日</span>
-                <span class="week-item font-14">一</span>
-                <span class="week-item font-14">二</span>
-                <span class="week-item font-14">三</span>
-                <span class="week-item font-14">四</span>
-                <span class="week-item font-14">五</span>
-                <span class="week-item font-14">六</span>
-            </div>
-            <v-touch @swipeleft="handleSwiperLeft" @swiperight="handleSwiperRight">
-                <div class="flex-day">
-                    <span class="day-item font-16" :class="{gray: item.gray, currentDay: item.selected, clicked: item.date === clickeDate}" v-for="item in days" :key="item.date" @click.stop="handleClicked(item.date)">
-                        <div>{{item.day}}</div>
-                        <div class="font-12 lightGray" :class="{gray: item.gray, whiteFont: item.selected}">{{item.lunarDate}}</div>
-                    </span>
-                </div>
-            </v-touch>
+    <div class="day-content">
+        <div class="flex-week">
+            <span class="week-item font-14">日</span>
+            <span class="week-item font-14">一</span>
+            <span class="week-item font-14">二</span>
+            <span class="week-item font-14">三</span>
+            <span class="week-item font-14">四</span>
+            <span class="week-item font-14">五</span>
+            <span class="week-item font-14">六</span>
         </div>
+        <v-touch @swipeleft="handleSwiperLeft" @swiperight="handleSwiperRight">
+            <div class="flex-day">
+                <span class="day-item font-16" :class="{gray: item.gray, currentDay: item.selected, clicked: item.date === clickeDate}" v-for="item in days" :key="item.date" @click.stop="handleClicked(item.date)">
+                    <div>{{item.day}}</div>
+                    <div class="font-12 lightGray" :class="{gray: item.gray, whiteFont: item.selected}">{{item.lunarDate}}</div>
+                </span>
+            </div>
+        </v-touch>
+    </div>
 </template>
 
 <script>
@@ -45,24 +45,24 @@ export default {
 </script>
 
 <style lang="css">
-.flex-week {
+.day-content .flex-week {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     height: 80px;
     align-items: center;
 }
-.flex-week .week-item {
+.day-content .flex-week .week-item {
     width: 14%;
     text-align: center;
 }
-.flex-day {
+.day-content .flex-day {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
-.flex-day .day-item {
+.day-content .flex-day .day-item {
     text-align: center;
     width: 14%;
     padding: 15px 0;
