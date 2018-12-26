@@ -75,6 +75,7 @@ export default {
         },
         handleSelectMonth: function(date) {
             this.currentDate = `${date}/1`;
+            this.monthSelected = "day";
             this.isYearView = false;
             this.scaleDraw = `scaleDraw${date.split('/')[1]}`;
         }
